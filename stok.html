@@ -5,7 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Informasi Bahan Ajar — SITTA</title>
   <link rel="stylesheet" href="CSS/style.css">
+  <!-- Internal CSS -->
+   <style>
+    #stok-header h1 {
+      border-left: 4px solid var(--kuning-ut);
+      padding-left: 12px;
+    }
+    #tabelStok th {
+      letter-spacing: 0.5px;
+      font-size: 13px;
+    }
+  </style>
+
 </head>
+
 <body>
 
   <!-- Navbar sama seperti dashboard -->
@@ -139,108 +152,7 @@
 
   <script src="JS/data.js"></script>
   <script src="JS/script.js"></script>
-  <script>
-  // Cek login
-  var userLogin = JSON.parse(sessionStorage.getItem('userLogin'));
-  if (!userLogin) window.location.href = 'index.html';
-
-  if (userLogin.role !== 'Administrator') {
-  document.getElementById('btnTambah').style.display = 'none';
-}
-
-  // Dropdown & logout
-  document.getElementById('btnLaporan').addEventListener('click', function(e) {
-    e.preventDefault();
-    var menu = document.getElementById('dropdownLaporan');
-    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-  });
-  document.getElementById('btnLogout').addEventListener('click', function(e) {
-  e.preventDefault();
-  if (confirm('Apakah Anda yakin ingin keluar?')) {
-    sessionStorage.removeItem('userLogin');
-    window.location.href = 'index.html';
-  }
-});
-
-  // Render tabel
-  function renderTabel(data) {
-    var tbody = document.getElementById('isiTabel');
-    tbody.innerHTML = '';
-    data.forEach(function(item, index) {
-      var baris = document.createElement('tr');
-      baris.innerHTML =
-        '<td>' + (index + 1) + '</td>' +
-        '<td><img src="' + item.cover + '" alt="' + item.namaBarang + '" style="width:60px; height:80px; object-fit:cover; border-radius:6px;"></td>' +
-        '<td>' + item.kodeLokasi + '</td>' +
-        '<td>' + item.kodeBarang + '</td>' +
-        '<td>' + item.namaBarang + '</td>' +
-        '<td>' + item.jenisBarang + '</td>' +
-        '<td>' + item.edisi + '</td>' +
-        '<td class="' + (item.stok < 50 ? 'stok-rendah' : 'stok-aman') + '">' + item.stok + '</td>' +
-        '<td><button onclick="lihatDetail(' + index + ')" style="background:var(--biru-ut);color:white;border:none;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:12px;">Detail</button></td>';
-      tbody.appendChild(baris); // ← ini yang kurang tadi
-    });
-  }
-
-  renderTabel(dataBahanAjar);
-
-  // Lihat detail
-  function lihatDetail(index) {
-    var item = dataBahanAjar[index];
-    document.getElementById('detailCover').src = item.cover;
-    document.getElementById('detailCover').alt = item.namaBarang;
-    document.getElementById('detailKodeLokasi').textContent = item.kodeLokasi;
-    document.getElementById('detailKodeBarang').textContent = item.kodeBarang;
-    document.getElementById('detailNamaBarang').textContent = item.namaBarang;
-    document.getElementById('detailJenis').textContent      = item.jenisBarang;
-    document.getElementById('detailEdisi').textContent      = item.edisi;
-    document.getElementById('detailStok').textContent       = item.stok;
-    bukaModal('modalDetail');
-  }
-
-  // Tambah stok
-  document.getElementById('btnTambah').addEventListener('click', function() {
-    document.getElementById('formTambah').style.display = 'block';
-  });
-  document.getElementById('btnBatal').addEventListener('click', function() {
-    document.getElementById('formTambah').style.display = 'none';
-  });
-  document.getElementById('btnSimpan').addEventListener('click', function() {
-    var lokasi = document.getElementById('addLokasi').value.trim();
-    var kode   = document.getElementById('addKode').value.trim();
-    var nama   = document.getElementById('addNama').value.trim();
-    var jenis  = document.getElementById('addJenis').value;
-    var edisi  = document.getElementById('addEdisi').value.trim();
-    var stok   = document.getElementById('addStok').value;
-
-    if (!lokasi || !kode || !nama || !edisi || !stok) {
-      alert('Semua field wajib diisi!');
-      return;
-    }
-
-    dataBahanAjar.push({
-      kodeLokasi: lokasi,
-      kodeBarang: kode,
-      namaBarang: nama,
-      jenisBarang: jenis,
-      edisi: edisi,
-      stok: parseInt(stok),
-      cover: ''
-    });
-
-    renderTabel(dataBahanAjar);
-
-    document.getElementById('addLokasi').value = '';
-    document.getElementById('addKode').value   = '';
-    document.getElementById('addNama').value   = '';
-    document.getElementById('addEdisi').value  = '';
-    document.getElementById('addStok').value   = '';
-    document.getElementById('formTambah').style.display = 'none';
-
-    alert('Stok baru berhasil ditambahkan!');
-  });
-</script>
-
+ 
 
 </body>
 </html>

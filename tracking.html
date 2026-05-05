@@ -5,6 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tracking Pengiriman — SITTA</title>
   <link rel="stylesheet" href="CSS/style.css">
+  
+  <!-- Internal CSS -->
+  <style>
+    #tracking-content h1 {
+      border-left: 4px solid var(--kuning-ut);
+      padding-left: 12px;
+    }
+    #inputDO {
+      font-size: 14px;
+      letter-spacing: 0.5px;
+    }
+  </style>
 </head>
 <body>
 
@@ -97,105 +109,7 @@
 
   <script src="JS/data.js"></script>
   <script src="JS/script.js"></script>
-  <script>
-    // Cek login
-    var userLogin = JSON.parse(sessionStorage.getItem('userLogin'));
-    if (!userLogin) window.location.href = 'index.html';
-
-    // Dropdown & logout
-    document.getElementById('btnLaporan').addEventListener('click', function(e) {
-      e.preventDefault();
-      var menu = document.getElementById('dropdownLaporan');
-      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-    });
-    document.getElementById('btnLogout').addEventListener('click', function(e) {
-  e.preventDefault();
-  if (confirm('Apakah Anda yakin ingin keluar?')) {
-    sessionStorage.removeItem('userLogin');
-    window.location.href = 'index.html';
-  }
-});
-
-    // Tombol Cari
-    document.getElementById('btnCari').addEventListener('click', function() {
-      cariDO();
-    });
-
-    // Enter key juga bisa cari
-    document.getElementById('inputDO').addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') cariDO();
-    });
-
-    function cariDO() {
-      var noDO = document.getElementById('inputDO').value.trim();
-
-      // Sembunyikan hasil sebelumnya
-      document.getElementById('hasil-tracking').style.display   = 'none';
-      document.getElementById('tidak-ditemukan').style.display  = 'none';
-
-      if (!noDO) {
-        alert('Masukkan Nomor DO terlebih dahulu!');
-        return;
-      }
-
-      // Cari di dataTracking dari data.js
-      var data = dataTracking[noDO];
-
-      if (!data) {
-        document.getElementById('noDOGagal').textContent = noDO;
-        document.getElementById('tidak-ditemukan').style.display = 'block';
-        return;
-      }
-
-      // Isi data nama & nomor DO
-      document.getElementById('namaMahasiswa').textContent = data.nama;
-      document.getElementById('nomorDO').textContent = 'No. DO: ' + data.nomorDO;
-
-      // Status badge
-      var badge = document.getElementById('status-badge');
-      badge.textContent = data.status;
-      badge.className = '';
-      if (data.status === 'Dikirim') {
-        badge.style.background = '#27ae60';
-      } else if (data.status === 'Dalam Perjalanan') {
-        badge.style.background = '#f39c12';
-      } else {
-        badge.style.background = '#2980b9';
-      }
-
-      // Progress bar
-      var persen = data.status === 'Dikirim' ? 100 :
-                   data.status === 'Dalam Perjalanan' ? 60 : 30;
-      document.getElementById('progress-persen').textContent = persen + '%';
-      document.getElementById('progress-bar').style.width = persen + '%';
-      document.getElementById('progress-bar').style.background =
-        persen === 100 ? '#27ae60' : persen >= 60 ? '#f39c12' : '#2980b9';
-
-      // Detail
-      document.getElementById('detailEkspedisi').textContent = data.ekspedisi;
-      document.getElementById('detailTanggal').textContent   = data.tanggalKirim;
-      document.getElementById('detailPaket').textContent     = data.paket;
-      document.getElementById('detailTotal').textContent     = data.total;
-
-      // Timeline perjalanan
-      var list = document.getElementById('listPerjalanan');
-      list.innerHTML = '';
-      data.perjalanan.forEach(function(p, i) {
-        var li = document.createElement('li');
-        li.innerHTML =
-          '<div class="tl-dot"></div>' +
-          '<div class="tl-info">' +
-            '<span class="tl-waktu">' + p.waktu + '</span>' +
-            '<span class="tl-keterangan">' + p.keterangan + '</span>' +
-          '</div>';
-        li.className = i === data.perjalanan.length - 1 ? 'tl-item tl-aktif' : 'tl-item tl-selesai';
-        list.appendChild(li);
-      });
-
-      // Tampilkan hasil
-      document.getElementById('hasil-tracking').style.display = 'block';
-    }
-  </script>
+ 
 
 </body>
 </html>

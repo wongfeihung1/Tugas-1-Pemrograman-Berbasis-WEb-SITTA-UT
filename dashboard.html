@@ -6,11 +6,32 @@
   <title>Dashboard — SITTA</title>
   <link rel="stylesheet" href="CSS/style.css">
 
+  <!-- Internal CSS -->
+  <style>                                    
+    #sapaan {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    #info-user {
+      font-size: 13px;
+      color: var(--teks-abu);
+    }
+    #kartu-menu .kartu-icon {
+      transition: background-color 0.3s;
+    }
+    #kartu-menu .kartu:hover .kartu-icon {
+      background-color: var(--kuning-ut);
+    }
+  </style>
+
 </head>
 <body>
    <!-- Navigasi atas -->
   <nav id="navbar">
-    <a href="dashboard.html" id="nav-brand">SITTA</a>
+    <a href="dashboard.html" id="nav-brand">
+  <img src="img/logo ut.png" alt="Logo UT" style="height: 32px; vertical-align: middle; margin-right: 8px;">
+  SITTA
+</a>
     <div id="nav-menu">
       <a href="stok.html">Informasi Bahan Ajar</a>
       <a href="tracking.html">Tracking Pengiriman</a>
@@ -33,6 +54,26 @@
   <main id="dashboard-content">
     <h1 id="sapaan">...</h1>
     <p id="info-user"></p>
+    
+    <!-- Statistik ringkasan -->
+<div id="statistik">
+  <div class="stat-card">
+    <div class="stat-angka" id="totalBahan"></div>
+    <div class="stat-label">Total Bahan Ajar</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-angka" id="totalStok"></div>
+    <div class="stat-label">Total Stok</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-angka" id="totalDO"></div>
+    <div class="stat-label">DO Berjalan</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-angka" id="tanggalHari"></div>
+    <div class="stat-label">Hari Ini</div>
+  </div>
+</div>
 
    <div id="kartu-menu">
   <a href="stok.html" class="kartu">
@@ -56,50 +97,8 @@
 
   <script src="JS/data.js"></script>
   <script src="JS/script.js"></script>
-  <script>
-    // Cek apakah sudah login
-    var userLogin = JSON.parse(sessionStorage.getItem('userLogin'));
-    if (!userLogin) {
-      window.location.href = 'index.html';
-    }
-
-    // Tampilkan greeting berdasarkan jam
-    var jam = new Date().getHours();
-    var sapa = '';
-    if (jam >= 5 && jam < 11) {
-      sapa = 'Selamat Pagi';
-    } else if (jam >= 11 && jam < 15) {
-      sapa = 'Selamat Siang';
-    } else if (jam >= 15 && jam < 18) {
-      sapa = 'Selamat Sore';
-    } else {
-      sapa = 'Selamat Malam';
-    }
-
-    document.getElementById('sapaan').textContent = sapa + ', ' + userLogin.nama + '!';
-    document.getElementById('info-user').textContent = 'Role: ' + userLogin.role + ' | Lokasi: ' + userLogin.lokasi;
-
-    // Dropdown Laporan
-    document.getElementById('btnLaporan').addEventListener('click', function(e) {
-      e.preventDefault();
-      var menu = document.getElementById('dropdownLaporan');
-      if (menu.style.display === 'block') {
-        menu.style.display = 'none';
-      } else {
-        menu.style.display = 'block';
-      }
-    });
-
-    // Logout
-    document.getElementById('btnLogout').addEventListener('click', function(e) {
-  e.preventDefault();
-  if (confirm('Apakah Anda yakin ingin keluar?')) {
-    sessionStorage.removeItem('userLogin');
-    window.location.href = 'index.html';
-  }
-});
-  </script>
-
+  
+  
 
 </body>
 </html>
